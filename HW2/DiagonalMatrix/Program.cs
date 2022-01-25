@@ -26,8 +26,9 @@ matrix[1, 1] = 2;
 
 Console.WriteLine(matrix.Equals(matrix1)); // returns true because matrix[1,1] = 2
 
-Console.WriteLine(matrix.ToString()); 
+Console.WriteLine(matrix.ToString());
 
 DiagonalMatrix newDiagonal = matrix.Extend(matrix1); // extends the matrix array with matrix 1 by creating a new diagonal matrix
 
 Console.WriteLine(newDiagonal.ToString());
+

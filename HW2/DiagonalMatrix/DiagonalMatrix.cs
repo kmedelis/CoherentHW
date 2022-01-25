@@ -35,7 +35,7 @@ namespace DiagonalMatrixProject
 				{
 					return 0;
 				}
-				if (i == Size || j == Size || i < 0 || j < 0)
+				if (i == Size || j == Size || i < 0 || j < 0 || i >= Size || j>= Size)
 				{
 					return 0;
 				}
@@ -114,19 +114,6 @@ namespace DiagonalMatrixProject
             }
 			return false; // if the sizes arent equal, return false
 		}
-
-		public DiagonalMatrix Extend(object obj)
-        {
-			var extendObject = (DiagonalMatrix)obj;
-			int[] front = this.DiagonalMatrixMembers;
-			int[] back = extendObject.DiagonalMatrixMembers;
-			front = front.Concat(back).ToArray();
-
-			DiagonalMatrix extendedDiagonalMatrix = new DiagonalMatrix(front); // creates new Extended Diagonal Matrix
-
-			return extendedDiagonalMatrix;
-		}
-
     }
 }
 

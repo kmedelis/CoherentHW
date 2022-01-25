@@ -3,50 +3,37 @@ namespace TrainingManagmentSystem
 {
     public class Training : CommonEducation
     {
-        private List<CommonEducation> Lessons;
+        private List<CommonEducation> lessons;
 
 
         public Training(string description) : base(description)
         {
             Description = description;
-            Lessons = new List<CommonEducation>();
+            lessons = new List<CommonEducation>();
         }
 
-        public Training()
+        public Training() : base(null, null)
         {
-            Description = null;
-            Lessons = new List<CommonEducation>();
         }
 
 
-        public void add(CommonEducation commonEducation)
+        public void Add(CommonEducation commonEducation)
         {
-            Lessons.Add(commonEducation);
+            lessons.Add(commonEducation);
         }
 
-        public bool isPractical()
+        public bool IsPractical()
         {
-            int temp = 0;
-
-            foreach (CommonEducation element in Lessons)
+            if (!(element is PracticalLesson))
             {
-                if (element is PracticalLesson)
-                {
-                    temp++;
-                }
+                return false;
             }
-
-            if (temp == Lessons.Count)
-            {
-                return true;
-            }
-            return false;
         }
 
         public Training Clone()
         {
             Training newTraining = new Training();
-            foreach(CommonEducation element in Lessons)
+            foreach(CommonEducation element in lessons)
             {
                 newTraining.add(element);
             }

@@ -11,9 +11,8 @@ namespace TrainingManagmentSystem
 			Description = description;
 		}
 
-		public CommonEducation() //constructor for when description is not written
+		public CommonEducation() : this(null)
 		{
-			Description = null;
 		}
 	}
 }
