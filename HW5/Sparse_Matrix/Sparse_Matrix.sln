@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1700.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparseMatrix", "SparseMatrix.csproj", "{10EDC0D1-2DE4-4609-9E93-CD91465F4390}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10EDC0D1-2DE4-4609-9E93-CD91465F4390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10EDC0D1-2DE4-4609-9E93-CD91465F4390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10EDC0D1-2DE4-4609-9E93-CD91465F4390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10EDC0D1-2DE4-4609-9E93-CD91465F4390}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {762BF6FC-2708-4732-9AC7-3FA9D8326A04}
+	EndGlobalSection
+EndGlobal
