@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using DiagonalMatrix;
 
@@ -6,9 +6,8 @@ namespace DiagonalMatrixProject
 {
 	public class GenericDiagonalMatrix<T>
 	{
-		public T[] DiagonalMatrixMembers { get; set; }
+		private T[] _diagonalMatrix { get; set; }
 		private readonly int _size;
-        private T[] diagonalExtended;
         public event EventHandler<ElementChanged<T>> OnElementChangeEvent;
 
 		public GenericDiagonalMatrix(int size)
@@ -19,7 +18,7 @@ namespace DiagonalMatrixProject
 			}
 			if (size >= 0)
 			{
-				DiagonalMatrixMembers = new T[size];
+				_diagonalMatrix = new T[size];
 				_size = size;
 			}
 
@@ -27,7 +26,7 @@ namespace DiagonalMatrixProject
 
         public GenericDiagonalMatrix(T[] diagonalExtended)
         {
-            this.diagonalExtended = diagonalExtended;
+            _diagonalMatrix = diagonalExtended;
         }
 
         public T this[int i, int j]
@@ -44,16 +43,16 @@ namespace DiagonalMatrixProject
 				}
 				else
 				{
-					return DiagonalMatrixMembers[i];
+					return _diagonalMatrix[i];
 				}
 			}
 			set
 			{
 				if (i == j && i < _size && j < _size && i >= 0 && j >= 0)
 				{
-					T oldvalue = DiagonalMatrixMembers[i];
+					T oldvalue = _diagonalMatrix[i];
 					T newvalue = value;
-					DiagonalMatrixMembers[i] = value;
+					_diagonalMatrix[i] = value;
 					if (!EqualityComparer<T>.Default.Equals(oldvalue, newvalue))
 					{
 						OnElementChangeEvent?.Invoke(this, new ElementChanged<T>(i, j, oldvalue, newvalue));
@@ -80,7 +79,7 @@ namespace DiagonalMatrixProject
 
 				}
 
-				stringToPrint.Append(this.DiagonalMatrixMembers[j]); // the number on the diagonal
+				stringToPrint.Append(this._diagonalMatrix[j]); // the number on the diagonal
 
 				for (int z = 0; z < temp1; z++) // the number of zeroes after 
 				{
