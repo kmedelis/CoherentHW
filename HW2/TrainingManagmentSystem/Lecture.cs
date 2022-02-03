@@ -11,11 +11,8 @@ namespace TrainingManagmentSystem
 			Description = description;
 		}
 
-		public Lecture()
-		{
-			Topic = null;
-			Description = null;
-		}
+		public Lecture() : base(null, null)
+		{ }
 	}
 }
 
