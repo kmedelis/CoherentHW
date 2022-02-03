@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DiagonalMatrixProject;
 using System.Collections.Generic;
 using DiagonalMatrix;
@@ -10,8 +10,8 @@ namespace DiagonalMatrix
 	{
 		public GenericDiagonalMatrix<T> DiagonalMatrix;
 
-		public int lastCoordinateI;
-		public int lastCoordinateJ;
+		private int _lastCoordinateI;
+		private int _lastCoordinateJ;
 
 		public MatrixTracker(GenericDiagonalMatrix<T> obj)
 		{
@@ -21,16 +21,14 @@ namespace DiagonalMatrix
 
         public void Tracker(object sender, ElementChanged<T> elementChanged)
         {
-			lastCoordinateI = elementChanged.I;
-			lastCoordinateJ = elementChanged.J;
+			_lastCoordinateI = elementChanged.I;
+			_lastCoordinateJ = elementChanged.J;
 		}
 
-		public void Undo() // does this method has to have an ability to restore all changes made to diagonal matrix? Because if yes, I would have to store the
-			// OldValue and NewValue and Coordinates from ElementChange into an array so I would know how to properly undo them in a row. 
+		public void Undo() 
 		{
-			DiagonalMatrix[lastCoordinateI, lastCoordinateJ] = default(T);
+			DiagonalMatrix[_lastCoordinateI, _lastCoordinateJ] = default(T);
 		}
 
 	}
 }
-
