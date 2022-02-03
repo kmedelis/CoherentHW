@@ -48,7 +48,7 @@ namespace TrainingManagmentSystem
             Training newTraining = new Training();
             foreach(CommonEducation element in Lessons)
             {
-                newTraining.add(element);
+                newTraining.add(newTraining.add(element.Clone()););
             }
             return newTraining;
         }
