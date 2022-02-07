@@ -39,8 +39,7 @@ namespace ISBN
             }
 			Authors.Add(Author);
 			return "The author has been successfuly added";
-        }
-
+		}
 	}
 }
 
