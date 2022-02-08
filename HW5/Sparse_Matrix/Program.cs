@@ -11,6 +11,9 @@ SparseMatrix sparseMatrix = new SparseMatrix(6,6);
 sparseMatrix[4, 1] = 5;
 sparseMatrix[0, 4] = 2;
 sparseMatrix[0, 0] = 3;
+//sparseMatrix[0, 1] = 0; // throws exception
+
+//Console.WriteLine(sparseMatrix[0, 3]); // throws exception
 
 
 foreach(int sparse in sparseMatrix)
