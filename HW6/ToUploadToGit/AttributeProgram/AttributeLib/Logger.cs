@@ -17,6 +17,26 @@ namespace AttributesLibrary
 			Dictionary<string, string> valuesToWrite = new Dictionary<string, string>();
 			if (type.GetCustomAttribute<TrackingEntity>() != null) // checks if obj has customattribute "TrackingEntity"
 			{
+				foreach (FieldInfo field in fieldItems)
+				{
+					object[] fieldAttributes = field.GetCustomAttributes(false); // get attributes of each field
+					{
+						foreach (object attribute in fieldAttributes)
+						{
+							if (attribute is TrackingProperty) // if attribute is TrackingProperty, then add the property to the dictionary
+							{
+								if (((TrackingProperty)attribute).NameOfAttribute != null) // we are checking if the attribute has a name (not null)
+								{
+									valuesToWrite.Add(((TrackingProperty)attribute).NameOfAttribute, prop.GetValue(obj).ToString());
+								}
+								else
+								{
+									valuesToWrite.Add(nameof(prop), prop.GetValue(obj).ToString());
+								}
+							}
+						}
+					}
+				}
 				foreach (PropertyInfo prop in items)
 				{
 					object[] attributes = prop.GetCustomAttributes(false); // get attributes of each property
@@ -32,26 +52,6 @@ namespace AttributesLibrary
 								else
 								{
 									valuesToWrite.Add(nameof(prop), prop.GetValue(obj).ToString());
-								}
-							}
-						}
-					}
-					foreach (FieldInfo field in fieldItems)
-					{
-						object[] fieldAttributes = field.GetCustomAttributes(false); // get attributes of each field
-						{
-							foreach (object attribute in fieldAttributes)
-							{
-								if (attribute is TrackingProperty) // if attribute is TrackingProperty, then add the property to the dictionary
-								{
-									if (((TrackingProperty)attribute).NameOfAttribute != null) // we are checking if the attribute has a name (not null)
-									{
-										valuesToWrite.Add(((TrackingProperty)attribute).NameOfAttribute, prop.GetValue(obj).ToString());
-									}
-									else
-									{
-										valuesToWrite.Add(nameof(prop), prop.GetValue(obj).ToString());
-									}
 								}
 							}
 						}
