@@ -17,17 +17,9 @@ namespace Vacations
             Vacations.Add(new Vacation(employeeName, start, end));
         }
 
-        public int AverageLength()
+        public double AverageLength()
         {
-            var list = Vacations.Select(x => x.VacationEnd - x.VacationStart).ToList();
-            int itemCount = list.Count;
-            int days = 0;
-            for (int i = 0; i < itemCount; i++)
-            {
-                days = days + (int)list[i].TotalDays;
-            }
-            int averageLength = days / itemCount;
-            return averageLength;
+            return Vacations.Average(vacation => (vacation.VacationEnd - vacation.VacationStart).Days);
         }
 
         public IEnumerable<(string, long)> AverageVacationByEmployee()
@@ -54,7 +46,7 @@ namespace Vacations
             {
                 foreach (var vacation in Vacations)
                 {
-                    if (vacation.VacationStart.Month <= i && i <= vacation.VacationEnd.Month)
+                    if (vacation.VacationStart.Month <= i && vacation.VacationEnd.Month >= i)
                     {
                         numberOfEmployees++;
                     }
@@ -67,7 +59,7 @@ namespace Vacations
 
         public long[] DaysWithNoVacations() // I believe that an array is much more effective resource vise in this case? 
         {
-            long[] daysWhenWorked = new long[365];
+            long[] daysWithNoVacation = new long[365];
 
             foreach (var vacation in Vacations)
             {
@@ -78,31 +70,27 @@ namespace Vacations
 
                 for (long i = start-1; i < end; i++)
                 {
-                    daysWhenWorked[i] = 1;
+                    daysWithNoVacation[i] = 1;
                 }
             }
-            return daysWhenWorked;
+            return daysWithNoVacation;
         }
 
-
-        public bool CheckForDupliaces()
+        public bool CheckForDupliaces() // made the code more simple this time 
         {
-            var listOfUnique = Vacations.Select(x => x.Name).Distinct().ToList(); // selects disctint
-            foreach (var unique in listOfUnique)
+            DateTime endPrevious = DateTime.MinValue;
+            var orederedVacations = Vacations.OrderBy(x => x.VacationStart); // first order vacations by start date so that there are no need to check vacation 1 and vacation 3
+            foreach (var vacation in orederedVacations)
             {
-                var tempList = Vacations.Where(x => x.Name.Equals(unique)).ToList(); // selects all the entries with a certain name
-                for (int i = 0; i < tempList.Count - 1; i++)
+                if(vacation.VacationStart <= endPrevious)
                 {
-                    if (tempList[i].VacationStart <= tempList[i + 1].VacationEnd && tempList[i + 1].VacationStart <= tempList[i].VacationEnd)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+                endPrevious = vacation.VacationEnd;
             }
             return false;
         }
     }
 }
-
 
 
