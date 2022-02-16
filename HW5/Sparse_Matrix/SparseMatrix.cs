@@ -9,17 +9,17 @@ namespace Sparse_Matrix
 {
 	public class SparseMatrix : IEnumerable<int>
 	{
-		
+
 		private int _height;
 		private int _width;
-		private List<SparseMatrixEntry> _matrixMembers;
+		private Dictionary<(int height, int width), int> _matrixMembers;
 
 
 		public SparseMatrix(int height, int width)
 		{
 			if (height > 0 && width > 0)
 			{
-				_matrixMembers = new List<SparseMatrixEntry>();
+				_matrixMembers = new Dictionary<(int height, int width), int>();
 				_height = height;
 				_width = width;
 			}
@@ -33,127 +33,80 @@ namespace Sparse_Matrix
 		{
 			get
 			{
-				foreach (SparseMatrixEntry entry in _matrixMembers)
+				if (!_matrixMembers.ContainsKey((i, j)))  // if there is no such value return 0
 				{
-					if (entry.CoordinateX == i & entry.CoordinateY == j)
-					{
-						return entry.Value;
-					}
+					return 0;
 				}
-				throw new ArgumentException("can't retrieve zero");
-                
+				else
+				{
+					return _matrixMembers[(i, j)];
+				}
 			}
 			set
 			{
 				if (value != 0)
 				{
-					_matrixMembers.Add(new SparseMatrixEntry(i, j, value));
+					_matrixMembers.Add((i, j), value);
 				}
-                else
-                {
-					throw new ArgumentException("can't make zero a member of the matrix");
-                }
+				if (value == 0)
+				{
+					if (_matrixMembers.ContainsKey((i, j))) // this allows to zero out values
+					{
+						_matrixMembers.Remove((i, j));
+					}
+				}
 			}
 		}
 
-		public override string ToString()
+
+		public override string ToString() // redoing this because I realized I can simply use get property get because it now returns 0.
 		{
-
-			_matrixMembers = _matrixMembers.OrderBy(x => x.CoordinateX)
-					.ThenBy(x => x.CoordinateY).ToList(); // this ensures that the MatrixMembers is always sorted from low to high for the ToString method.
-
-			int currentItem = 0;
-			int tempX = _matrixMembers[currentItem].CoordinateX;
-			int tempY = _matrixMembers[currentItem].CoordinateY;
-			int tempValue = _matrixMembers[currentItem].Value;
-
-			StringBuilder stringBuilder = new StringBuilder("");
-
+			StringBuilder matrixOutput = new StringBuilder();
 			for (int i = 0; i < _height; i++)
 			{
 				for (int j = 0; j < _width; j++)
 				{
-					if (i == tempX && j == tempY)
-					{
-						stringBuilder.Append(tempValue);
-						if (currentItem != _matrixMembers.Count - 1) // to prevent OutOfRange exception
-						{
-							currentItem++;
-							tempX = _matrixMembers[currentItem].CoordinateX;
-							tempY = _matrixMembers[currentItem].CoordinateY;
-							tempValue = _matrixMembers[currentItem].Value;
-						}
-					}
-					else
-					{
-						stringBuilder.Append("0");
-					}
+					matrixOutput.Append(this[i, j]);
 				}
-				stringBuilder.Append("\n");
+				matrixOutput.Append("\n");
 			}
-			return stringBuilder.ToString();
+			return matrixOutput.ToString();
+
 		}
 
 		public IEnumerator<int> GetEnumerator()
 		{
-			foreach (SparseMatrixEntry sparse in this._matrixMembers)
+			for (int i = 0; i < _height; i++)
 			{
-				if (sparse.Value != 0)
+				for (int j = 0; j < _width; j++)
 				{
-					yield return sparse.Value;
-				}
-				else
-				{
-					throw new ArgumentException("can't return zero");
+					yield return this[i, j];
 				}
 			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			foreach (SparseMatrixEntry sparse in this._matrixMembers)
-			{
-				if (sparse.Value != 0)
-				{
-					yield return sparse.Value;
-				}
-                else
-                {
-					throw new ArgumentException("can't return zero");
-                }
-			}
-		}
-
-		public IEnumerable<(int, int, int)> GetNozeroElements()
-		{
-			_matrixMembers = _matrixMembers.OrderBy(x => x.CoordinateX)
-					.ThenBy(x => x.CoordinateY).ToList(); // sorts the list by columns then rows
-			List<SparseMatrixEntry> listOfTuples = new List<SparseMatrixEntry>();
-			foreach (SparseMatrixEntry entry in _matrixMembers)
-			{
-				(int, int, int) tuple = (entry.CoordinateX, entry.CoordinateY, entry.Value);
-				yield return tuple;
-			}
+			return GetEnumerator();
 		}
 
 		public int GetCount(int value)
 		{
-			int count = 0;
-
 			if (value == 0)
 			{
 				return _width * _height - _matrixMembers.Count;
 			}
 			else
 			{
-				foreach (SparseMatrixEntry entry in _matrixMembers)
-				{
-					if (entry.Value == value)
-					{
-						count++;
-					}
-				}
-				return count;
+				return _matrixMembers.Count(x => x.Value == value);
+			}
+		}
+
+		public IEnumerable<(int, int, int)> GetNoZeroElements()
+		{
+			foreach (KeyValuePair<(int, int), int> member in _matrixMembers)
+			{
+				yield return (member.Key.Item1, member.Key.Item2, member.Value);
 			}
 		}
 	}
