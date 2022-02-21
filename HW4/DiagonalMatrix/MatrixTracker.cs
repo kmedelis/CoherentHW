@@ -1,7 +1,6 @@
 using System;
 using DiagonalMatrixProject;
 using System.Collections.Generic;
-using DiagonalMatrix;
 
 
 namespace DiagonalMatrix
@@ -9,25 +8,30 @@ namespace DiagonalMatrix
 	public class MatrixTracker<T>
 	{
 		public GenericDiagonalMatrix<T> DiagonalMatrix;
-
-		private int _lastCoordinateI;
-		private int _lastCoordinateJ;
+		private ElementChanged<T> _changedargs;
 
 		public MatrixTracker(GenericDiagonalMatrix<T> obj)
 		{
 			DiagonalMatrix = obj;
 			DiagonalMatrix.OnElementChangeEvent += this.Tracker;
+			_changedargs = null;
 		}
 
-        public void Tracker(object sender, ElementChanged<T> elementChanged)
-        {
-			_lastCoordinateI = elementChanged.I;
-			_lastCoordinateJ = elementChanged.J;
-		}
-
-		public void Undo() 
+		public void Tracker(object sender, ElementChanged<T> elementChanged)
 		{
-			DiagonalMatrix[_lastCoordinateI, _lastCoordinateJ] = default(T);
+			_changedargs = elementChanged;
+		}
+
+		public void Undo()
+		{
+			if (_changedargs == null)
+			{
+				Console.WriteLine("The matrix is empty");
+			}
+			else
+			{
+				DiagonalMatrix[_changedargs.I, _changedargs.J] = _changedargs.Oldvalue;
+			}
 		}
 
 	}

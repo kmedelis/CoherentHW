@@ -45,10 +45,19 @@ MatrixTracker<int> tracker = new MatrixTracker<int>(diagonal4);
 diagonal4[0, 0] = 1;
 diagonal4[1, 1] = 2;
 diagonal4[3, 3] = 1;
-diagonal4[2, 2] = 1;
+diagonal4[3, 3] = 4;
 
-Console.WriteLine(diagonal4);
+Console.WriteLine(diagonal4); // returns {1,2,4}
 
 tracker.Undo();
 
-Console.WriteLine(diagonal4); // returns {1,2,0,1} because the last changed value was at the coordiantes 2,2, so it is set to 0
+Console.WriteLine(diagonal4); // returns {1,2,1}
+
+
+GenericDiagonalMatrix<int> diagonal5 = new GenericDiagonalMatrix<int>(5);
+
+MatrixTracker<int> tracker2 = new MatrixTracker<int>(diagonal5);
+
+tracker2.Undo();
+
+Console.WriteLine(diagonal5);
