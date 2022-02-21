@@ -22,7 +22,9 @@ stack2.Push("asd");
 stack2.Push("hohoho");
 stack2.Push("labasvakaras");
 
-MyStack<string> stack2reversed = stack2.ReverseStack(); // this creates completely new stack from stack2, just reversed
+MyStack<string> stack2reversed;
+
+stack2reversed = stack2.ReverseStack(); // this creates completely new stack from stack2, just reversed
 
 Console.WriteLine(stack2reversed.Pop()); //this pops asd, because this is reversed stack2
 Console.WriteLine(stack2.Pop()); //this pops labasvakaras because this is the original stack2
