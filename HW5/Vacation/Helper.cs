@@ -9,7 +9,6 @@ namespace Vacations
 			long toReturn = (long)date.TotalDays;
 			return toReturn;
 		}
-		
 	}
 }
 

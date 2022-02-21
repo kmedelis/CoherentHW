@@ -41,16 +41,9 @@ namespace Vacations
 
         public IEnumerable<(int, int)> VacationsByMonth()
         {
-            int numberOfEmployees = 0;
             for (int i = 1; i < 13; i++)
             {
-                foreach (var vacation in Vacations)
-                {
-                    if (vacation.VacationStart.Month <= i && vacation.VacationEnd.Month >= i)
-                    {
-                        numberOfEmployees++;
-                    }
-                }
+                int numberOfEmployees = Vacations.Where(x => x.VacationStart.Month <= i && x.VacationEnd.Month >= i).DistinctBy(x => x.Name).ToList().Count();
                 (int, int) tuple = (i, numberOfEmployees);
                 yield return tuple;
                 numberOfEmployees = 0;
@@ -68,7 +61,7 @@ namespace Vacations
                 long end = vacation.ConvertDateToDays() + start; // end is the gap between start and end + start because the start acts as an offset. 
                 Console.WriteLine("end: " + end);
 
-                for (long i = start-1; i < end; i++)
+                for (long i = start - 1; i < end; i++)
                 {
                     daysWithNoVacation[i] = 1;
                 }
@@ -78,19 +71,21 @@ namespace Vacations
 
         public bool CheckForDupliaces() // made the code more simple this time 
         {
-            DateTime endPrevious = DateTime.MinValue;
-            var orederedVacations = Vacations.OrderBy(x => x.VacationStart); // first order vacations by start date so that there are no need to check vacation 1 and vacation 3
-            foreach (var vacation in orederedVacations)
+            var duplicates = Vacations.GroupBy(x => x.Name).Where(g => g.Count() > 1).Select(g => g.Key).ToList(); // selects all the instances of Vacation where it is repeated more than once
+            foreach (var vacation in duplicates)
             {
-                if(vacation.VacationStart <= endPrevious)
+                DateTime endPrevious = DateTime.MinValue;
+                var orderedVacations = Vacations.Where(x => x.Name.Equals(vacation)).OrderBy(x => x.VacationStart).ToList(); // selects all the instances with the repeated name
+                foreach (var sameVacation in orderedVacations)
                 {
-                    return true;
+                    if (sameVacation.VacationStart <= endPrevious)
+                    {
+                        return true;
+                    }
+                    endPrevious = sameVacation.VacationEnd;
                 }
-                endPrevious = vacation.VacationEnd;
             }
             return false;
         }
     }
 }
-
-
